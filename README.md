@@ -15,12 +15,12 @@ In today's competitive tech job market, a standout resume is the first step towa
 
 ---
 
-## **The Flow** 🚀
+## **The Flow** ⏳
 
-✅ Upload your resume as a PDF using the **/upload** command.  
-✅ ResuRalph integrates with [**Hypothes.is**](https://hypothes.is/), generating a link for reviewers to leave **in-line** annotations on your resume.  
-✅ Users can click on the link to view comments left by reviewers, or use the **/get_annotations** command to pull the annotations directly into Discord.  
-✅ Once the user has made the appropriate changes, they can use the **/update** command to upload their newly updated resume.
+- Upload your resume as a PDF using the **/upload** command.
+- ResuRalph integrates with [**Hypothes.is**](https://hypothes.is/), generating a link for reviewers to leave **in-line** annotations on your resume.
+- Users can click on the link to view comments left by reviewers, or use the **/get_annotations** command to pull the annotations directly into Discord.
+- Once the user has made the appropriate changes, they can use the **/update** command to upload their newly updated resume.
 
 - When using **/update**, the optional **diff** subcommand allows users to pull the changes between their latest two resume's into discord, in a format that shows  
   🟢Added: "Project X | React, Node, SQL..."  
