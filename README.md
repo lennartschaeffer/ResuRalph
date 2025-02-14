@@ -1,31 +1,37 @@
-# **ResuRalph 🤖📄**  
-### A Discord bot for collaborative resume feedback  
+# **ResuRalph 🤖📄**
 
-ResuRalph helps students and professionals improve their resumes by enabling structured feedback directly in Discord. Users can upload their resumes, track changes, and compare different versions with an easy-to-use interface.  
+### A Discord bot for collaborative resume feedback
 
----
+In today's competitive tech job market, a standout resume is the first step toward success. However, the resume review process can often be cumbersome.
 
-## **Features** 🚀  
-✅ Upload and store resumes securely in **AWS S3**  
-✅ Track version history with **DynamoDB**  
-✅ Get instant **text-based differences** between resume versions  
-✅ Review and annotate resumes with **Hypothesis**  
-✅ Supports **long text handling** with Discord embeds and follow-ups  
+- Long, overwhelming review threads, where comments can easily get buried and overlooked.
+- Reviewers forced to download PDFs to view resume's and updated resume's, which becomes increasingly tedious with each incremental change.
+- The frustration of manually identifying and specifying which parts of the resume you're referring to.
+- Comparing two resume PDF's and trying to identify what changes were made by the user.
 
 ---
 
-## **How It Works**  
-1️⃣ Upload your resume via Discord  
-2️⃣ ResuRalph stores and tracks it in AWS  
-3️⃣ Get a link to annotate and review changes  
-4️⃣ See a **diff** of updates for better tracking  
+**ResuRalph streamlines this process.**
 
 ---
 
-## **Tech Stack** 🛠️  
-- **Node.js** 
-- **AWS S3**
-- **DynamoDB**  
-- **Discord.js** 
+## **The Flow** 🚀
+
+✅ Upload your resume as a PDF using the **/upload** command.  
+✅ ResuRalph integrates with [**Hypothes.is**](https://hypothes.is/), generating a link for reviewers to leave **in-line** annotations on your resume.  
+✅ Users can click on the link to view comments left by reviewers, or use the **/get_annotations** command to pull the annotations directly into Discord.  
+✅ Once the user has made the appropriate changes, they can use the **/update** command to upload their newly updated resume.
+
+- When using **/update**, the optional **diff** subcommand allows users to pull the changes between their latest two resume's into discord, in a format that shows  
+  🟢Added: "Project X | React, Node, SQL..."  
+  🔴Removed: "Work Experience Y | Example Company..."
+
+---
+
+## **Tech Stack** 🛠️
+
+- **Node.js**
+- **AWS (_S3_, _DynamoDB_, _EC2_)**
+- **Discord.js**
 
 ---
