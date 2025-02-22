@@ -35,12 +35,12 @@ const compareTextDiff = async (oldPdf, newPdf) => {
     //check that is not a whitespace change or empty
     if (diff[1].length == 0 || /^\s+$/.test(diff[1])) return;
     //remove bullet points from the text
-    diff[1] = diff[1].replace(/^[••▪◦●\-]\s*/gm, "");
+    diff[1] = diff[1].replace(/^[••▪◦●]\s*/gm, "");
     if (diff[0] === -1) {
-      removedText += `${diff[1]}\n`;
+      removedText += `• ${diff[1]} `;
     }
     if (diff[0] === 1) {
-      addedText += `${diff[1]}\n`;
+      addedText += `• ${diff[1]} `;
     }
   });
 
