@@ -16,14 +16,18 @@ const validateAndUploadPdf = async (interaction) => {
     }
     const attachment = interaction.options.getAttachment("file");
     const pdfName = attachment.name;
-    const buffer = await validatePdf(attachment);
-    const pdfUrl = await saveS3Resume(Buffer.from(buffer), interaction.user.id);
+    const buffer = await validatePdf(attachment, interaction);
+    //get the s3 key as well as pdf url so that we can save or delete the file if the db save fails
+    const { key, pdfUrl } = await saveS3Resume(
+      Buffer.from(buffer),
+      interaction.user.id
+    );
 
     if (!pdfUrl) return interaction.editReply("Failed to upload PDF. 😔");
 
     const userId = interaction.user.id;
     //upload the pdf url to dynamodb
-    await saveDbResume(pdfUrl, pdfName, userId, "v1");
+    await saveDbResume(pdfUrl, pdfName, userId, "v1", key);
 
     //Generate Hypothes.is annotation link
     const annotationLink = `https://via.hypothes.is/${pdfUrl}`;

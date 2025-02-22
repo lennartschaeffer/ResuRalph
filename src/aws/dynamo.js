@@ -4,6 +4,7 @@ const {
   PutItemCommand,
   QueryCommand,
 } = require("@aws-sdk/client-dynamodb");
+const { deleteS3Resume } = require("./s3");
 
 const dynamoClient = new DynamoDBClient({
   region: process.env.BUCKET_REGION,
@@ -13,7 +14,7 @@ const dynamoClient = new DynamoDBClient({
   },
 });
 
-const saveDbResume = async (pdfUrl, pdfName, userId, version) => {
+const saveDbResume = async (pdfUrl, pdfName, userId, version, s3Key) => {
   try {
     if (!pdfUrl || !userId) {
       console.error("Invalid userId or pdfUrl");
@@ -35,6 +36,8 @@ const saveDbResume = async (pdfUrl, pdfName, userId, version) => {
     await dynamoClient.send(putCommand);
   } catch (error) {
     console.error("Error creating resume in DB:", error);
+    //if theres an error in saving the resume, delete the uploaded file from s3
+    await deleteS3Resume(s3Key);
   }
 };
 
@@ -62,7 +65,7 @@ const getLatestDbResume = async (userId) => {
   }
 };
 
-const updateDbResume = async (userId, pdfUrl, pdfName) => {
+const updateDbResume = async (userId, pdfUrl, pdfName, key) => {
   try {
     //get the latest resume
     const latestResumeList = await getLatestDbResume(userId);
@@ -80,6 +83,8 @@ const updateDbResume = async (userId, pdfUrl, pdfName) => {
     console.log("Updated resume in DB");
   } catch (error) {
     console.error("Error updating resume in DB:", error);
+    //if theres an error in saving the resume, delete the uploaded file from s3
+    await deleteS3Resume(key);
   }
 };
 

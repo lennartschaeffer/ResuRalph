@@ -3,10 +3,14 @@
  * @param {*} attachment discord interaction's attachment
  * @returns buffer
  */
-const validatePdf = async (attachment) => {
+const validatePdf = async (attachment, interaction) => {
   try {
     if (!attachment || attachment.contentType !== "application/pdf") {
       return interaction.reply("❌ Please upload a valid PDF file.");
+    }
+    //do a check that the file size is less than 10MB
+    if (attachment.size > 10 * 1024 * 1024) {
+      return interaction.reply("❌ File size should be less than 10MB.");
     }
 
     const response = await fetch(attachment.url);

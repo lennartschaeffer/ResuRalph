@@ -2,16 +2,15 @@ require("dotenv").config();
 const { REST, Routes, SlashCommandBuilder } = require("discord.js");
 
 const commands = [
-  new SlashCommandBuilder()
-    .setName("review")
-    .setDescription("Get an AI resume review")
-    .addAttachmentOption((option) =>
-      option
-        .setName("file")
-        .setDescription("Upload your resume as a PDF")
-        .setRequired(true)
-    ),
-
+  // new SlashCommandBuilder()
+  //   .setName("review")
+  //   .setDescription("Get an AI resume review")
+  //   .addAttachmentOption((option) =>
+  //     option
+  //       .setName("file")
+  //       .setDescription("Upload your resume as a PDF")
+  //       .setRequired(true)
+  //   ),
   new SlashCommandBuilder()
     .setName("upload")
     .setDescription("Upload your resume for review by other members")
@@ -28,7 +27,9 @@ const commands = [
     .addStringOption((option) =>
       option
         .setName("pdf_url")
-        .setDescription("The URL of the resume PDF")
+        .setDescription(
+          "Right click on the latest resume link sent by ResuRalph and click Copy Link."
+        )
         .setRequired(true)
     ),
 
@@ -48,20 +49,19 @@ const commands = [
           "Show differences between the latest uploaded resume and the previous one"
         )
     ),
-].map((command) => command.toJSON()); // Convert to JSON format
+  new SlashCommandBuilder()
+    .setName("get_latest_resume")
+    .setDescription("Retrieve the link to your latest uploaded resume"),
+].map((command) => command.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN);
 
 const registerCommands = async () => {
   try {
     console.log("Registering slash commands...");
-    await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.CLIENT_ID,
-        process.env.GUILD_ID
-      ),
-      { body: commands }
-    );
+    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+      body: commands,
+    });
     console.log("Successfully registered slash commands!");
   } catch (error) {
     console.error(error);

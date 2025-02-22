@@ -6,13 +6,15 @@ const { validatePdf } = require("./helpers/validatePdf");
 const updateResume = async (interaction) => {
   try {
     await interaction.deferReply();
-    console.log("updating resume...");
-    console.log(interaction.options);
-    const diff = interaction.options.getBoolean("diff");
+
+    const diff = interaction.options.getBoolean("show_diff");
 
     const attachment = interaction.options.getAttachment("file");
-    const buffer = await validatePdf(attachment);
-    const pdfUrl = await saveS3Resume(Buffer.from(buffer), interaction.user.id);
+    const buffer = await validatePdf(attachment, interaction);
+    const { key, pdfUrl } = await saveS3Resume(
+      Buffer.from(buffer),
+      interaction.user.id
+    );
     const pdfName = attachment.name;
 
     if (!pdfUrl) return interaction.editReply("Failed to upload PDF. 😔");
@@ -28,7 +30,7 @@ const updateResume = async (interaction) => {
       );
     }
     const initialResumeURL = latestResume[0].resume_url.S;
-    await updateDbResume(userId, pdfUrl, pdfName);
+    await updateDbResume(userId, pdfUrl, pdfName, key);
 
     let differences = await compareTextDiff(initialResumeURL, pdfUrl);
 

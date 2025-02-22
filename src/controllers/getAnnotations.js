@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+const { default: axios, get } = require("axios");
 
 const getAnnotations = async (pdfUrl) => {
   try {
@@ -10,6 +10,7 @@ const getAnnotations = async (pdfUrl) => {
         Authorization: `Bearer ${process.env.HYPOTHESIS_API_KEY}`,
       },
     });
+
     const annotations = res.data;
     const formattedAnnotations = formatAnnotations(annotations);
     return formattedAnnotations;
@@ -20,22 +21,31 @@ const getAnnotations = async (pdfUrl) => {
 
 const formatAnnotations = (annotations) => {
   try {
+    //if theres no annotations, return a message saying so
+    if (annotations.total === 0) {
+      return "No annotations Yet!";
+    }
     let resultString = "Here's the annotations:\n";
-    console.log(annotations.rows);
     annotations.rows.forEach((annotation) => {
-      const textString = annotation.text;
-      const userString = annotation.user
-        ? `by ${annotation.user}`
-        : "by an anonymous user";
-      resultString += `📝 ${textString} \n - ${userString
+      annotation.target.forEach((target) => {
+        if (target.selector && target.selector[1]) {
+          resultString += `📄 *${target.selector[1].exact}*\n`;
+        }
+      });
+      resultString += `💭 ${annotation.text}\n`;
+      resultString += `👤 by ${annotation.user
         .replace("acct:", "")
         .replace("@hypothes.is", "")}\n`;
+      resultString += "\n";
     });
 
+    console.log(resultString);
     return resultString;
   } catch (error) {
     console.error("Error formatting annotations:", error);
   }
 };
+
+getAnnotations();
 
 module.exports = { getAnnotations };

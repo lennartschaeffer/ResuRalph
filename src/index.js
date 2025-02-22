@@ -3,6 +3,7 @@ const { processPDF } = require("./controllers/reviewWithGemini");
 const { validateAndUploadPdf } = require("./controllers/upload");
 const { getAnnotations } = require("./controllers/getAnnotations");
 const { updateResume } = require("./controllers/update");
+const { getLatestResume } = require("./controllers/getLatestResume");
 
 require("dotenv").config();
 
@@ -40,6 +41,10 @@ client.on("interactionCreate", async (interaction) => {
 
   if (interaction.commandName === "update") {
     await updateResume(interaction);
+  }
+
+  if (interaction.commandName === "get_latest_resume") {
+    await getLatestResume(interaction);
   }
 });
 

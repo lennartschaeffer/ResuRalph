@@ -5,3 +5,5 @@ node_modules
 .husky
 
 git_secrets.log
+
+transferScript.sh
