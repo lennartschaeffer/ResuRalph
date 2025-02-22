@@ -37,18 +37,18 @@ const compareTextDiff = async (oldPdf, newPdf) => {
     //remove bullet points from the text
     diff[1] = diff[1].replace(/^[••▪◦●]\s*/gm, "");
     if (diff[0] === -1) {
-      removedText += `• ${diff[1]} `;
+      removedText += `• ${diff[1]}\n`;
     }
     if (diff[0] === 1) {
-      addedText += `• ${diff[1]} `;
+      addedText += `• ${diff[1]}\n`;
     }
   });
 
   if (removedText) {
-    result += `🔴 Removed:\n${removedText}\n`;
+    result += `🔴 Removed:\n*${removedText}*\n`;
   }
   if (addedText) {
-    result += `🟢 Added:\n${addedText}`;
+    result += `🟢 Added:\n*${addedText}*`;
   }
 
   return result ?? "No changes found.";
