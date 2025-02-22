@@ -26,17 +26,30 @@ const compareTextDiff = async (oldPdf, newPdf) => {
 
   const diffs = dmp.diff_main(oldText, newText);
   dmp.diff_cleanupSemantic(diffs);
+
+  let removedText = "";
+  let addedText = "";
   let result = "";
+
   diffs.forEach((diff) => {
-    if (diff[1].length == 0) return;
+    //check that is not a whitespace change or empty
+    if (diff[1].length == 0 || /^\s+$/.test(diff[1])) return;
+    //remove bullet points from the text
     diff[1] = diff[1].replace(/^[••▪◦●\-]\s*/gm, "");
     if (diff[0] === -1) {
-      result += `🔴 Removed: ${diff[1]}\n`;
+      removedText += `${diff[1]}\n`;
     }
     if (diff[0] === 1) {
-      result += `🟢 Added: ${diff[1]}\n`;
+      addedText += `${diff[1]}\n`;
     }
   });
+
+  if (removedText) {
+    result += `🔴 Removed:\n${removedText}\n`;
+  }
+  if (addedText) {
+    result += `🟢 Added:\n${addedText}`;
+  }
 
   return result ?? "No changes found.";
 };
