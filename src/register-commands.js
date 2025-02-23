@@ -54,12 +54,26 @@ const commands = [
     .setDescription("Retrieve the link to your latest uploaded resume"),
 ].map((command) => command.toJSON());
 
-const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN);
+const botToken =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_BOT_TOKEN
+    : process.env.BOT_TOKEN;
+
+const clientId =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_CLIENT_ID
+    : process.env.CLIENT_ID;
+
+const rest = new REST({ version: "10" }).setToken(botToken);
 
 const registerCommands = async () => {
   try {
+    if (process.env.NODE_ENV === "development") {
+      console.log("In Dev Mode");
+    }
     console.log("Registering slash commands...");
-    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+
+    await rest.put(Routes.applicationCommands(clientId), {
       body: commands,
     });
     console.log("Successfully registered slash commands!");

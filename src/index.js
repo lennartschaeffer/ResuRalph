@@ -32,11 +32,7 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (interaction.commandName === "get_annotations") {
-    console.log(interaction.options.getString("pdf_url"));
-    const formattedResponse = await getAnnotations(
-      interaction.options.getString("pdf_url")
-    );
-    interaction.reply(formattedResponse);
+    await getAnnotations(interaction);
   }
 
   if (interaction.commandName === "update") {
@@ -51,4 +47,9 @@ client.on("interactionCreate", async (interaction) => {
 client.on("error", console.error);
 client.on("warn", console.warn);
 
-client.login(process.env.BOT_TOKEN);
+const botToken =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_BOT_TOKEN
+    : process.env.BOT_TOKEN;
+
+client.login(botToken);

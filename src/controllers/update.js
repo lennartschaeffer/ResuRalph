@@ -1,6 +1,7 @@
 const { updateDbResume, getLatestDbResume } = require("../aws/dynamo");
 const { saveS3Resume } = require("../aws/s3");
 const { compareTextDiff } = require("./helpers/getResumeDiff");
+const { sendLongMessage } = require("./helpers/sendLongMessage");
 const { validatePdf } = require("./helpers/validatePdf");
 
 const updateResume = async (interaction) => {
@@ -54,13 +55,6 @@ const updateResume = async (interaction) => {
   } catch (error) {
     console.error("Error updating resume:", error);
     interaction.editReply("An error occurred while updating your resume. 😔");
-  }
-};
-
-const sendLongMessage = async (interaction, text) => {
-  const maxLength = 2000;
-  for (let i = 0; i < text.length; i += maxLength) {
-    await interaction.followUp(text.substring(i, i + maxLength));
   }
 };
 
