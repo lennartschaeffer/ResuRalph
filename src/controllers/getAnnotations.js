@@ -39,7 +39,16 @@ const formatAnnotations = (annotations) => {
       resultString += "\n";
     });
 
-    console.log(resultString);
+    //if the annotations are too long, ie greater than 2000, truncate
+    if (resultString.length > 2000) {
+      resultString = resultString.slice(0, 1900);
+    }
+    //append a message saying the message exceeds character limit
+    if (resultString.length === 1900) {
+      resultString +=
+        "\n📝 Maximum character limit exceeded. See link for full annotations.";
+    }
+
     return resultString;
   } catch (error) {
     console.error("Error formatting annotations:", error);
