@@ -42,6 +42,7 @@ const updateResume = async (interaction) => {
         `📝 Your Resume has been updated! Here's the new link for review: ${newHypothesisLink}`
       );
     }
+    //if the differences are too long, send it in multiple messages
     if (differences.length < 1900) {
       interaction.editReply(
         `📝 Your Resume has been updated! Here's the new link for review: ${newHypothesisLink}.\nChanges:\n${differences}`
