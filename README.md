@@ -15,7 +15,7 @@ In today's competitive tech job market, a standout resume is the first step towa
 
 ---
 
-## **The Flow** ⏳
+## **The Flow** 
 
 - Upload your resume as a PDF using the **/upload** command.
 - ResuRalph integrates with [**Hypothes.is**](https://hypothes.is/), generating a link for reviewers to leave **in-line** annotations on your resume.
@@ -26,6 +26,7 @@ In today's competitive tech job market, a standout resume is the first step towa
   🟢Added: "Project X | React, Node, SQL..."  
   🔴Removed: "Work Experience Y | Example Company..."
 
+- Forgot the use the **diff** subcommand when you updated? No worries. Use the **/get_resume_diff** and paste the two hypothes.is links that you want to compare.
 ---
 
 ## **Tech Stack** 🛠️
