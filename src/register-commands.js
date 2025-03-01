@@ -52,6 +52,22 @@ const commands = [
   new SlashCommandBuilder()
     .setName("get_latest_resume")
     .setDescription("Retrieve the link to your latest uploaded resume"),
+
+  new SlashCommandBuilder()
+    .setName("get_resume_diff")
+    .setDescription("Get the differences between two resumes")
+    .addStringOption((option) =>
+      option
+        .setName("old_resume_url")
+        .setDescription("The hypothes.is URL of the old resume")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("new_resume_url")
+        .setDescription("The hypothes.is URL of the new resume")
+        .setRequired(true)
+    ),
 ].map((command) => command.toJSON());
 
 const botToken =

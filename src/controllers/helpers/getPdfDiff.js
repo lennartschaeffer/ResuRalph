@@ -7,6 +7,7 @@ const dmp = new DiffMatchPatch();
 const getTextContentsFromPdf = async (pdfUrl) => {
   // code to extract text from pdf
   try {
+    if (!pdfUrl) return;
     const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
     const pdfData = await pdfParse(response.data);
     return pdfData.text;
@@ -26,10 +27,10 @@ const compareTextDiff = async (oldPdf, newPdf) => {
 
   const diffs = dmp.diff_main(oldText, newText);
   dmp.diff_cleanupSemantic(diffs);
+  dmp.diff_cleanupEfficiency(diffs, 4);
 
   let removedText = "";
   let addedText = "";
-  let result = "";
 
   diffs.forEach((diff) => {
     //check that is not a whitespace change or empty
@@ -37,21 +38,21 @@ const compareTextDiff = async (oldPdf, newPdf) => {
     //remove bullet points from the text
     diff[1] = diff[1].replace(/^[••▪◦●]\s*/gm, "");
     if (diff[0] === -1) {
-      removedText += `${diff[1]} `;
+      removedText += `${diff[1]}\n──────────────\n`;
     }
     if (diff[0] === 1) {
-      addedText += `• ${diff[1]} `;
+      addedText += `• ${diff[1]}\n──────────────\n`;
     }
   });
 
-  if (removedText) {
-    result += `🔴 Removed:\n${removedText}\n`;
+  if (addedText.length >= 1020) {
+    addedText = addedText.substring(0, 1020) + "...";
   }
-  if (addedText) {
-    result += `🟢 Added:\n${addedText}`;
+  if (removedText.length >= 1020) {
+    removedText = removedText.substring(0, 1020) + "...";
   }
 
-  return result ?? "No changes found.";
+  return { addedText, removedText };
 };
 
 module.exports = { compareTextDiff };

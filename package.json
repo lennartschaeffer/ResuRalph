@@ -7,7 +7,6 @@
     "diff": "^7.0.0",
     "diff-match-patch": "^1.0.5",
     "discord.js": "^14.17.3",
-    "djs-commander": "^0.0.50",
     "dotenv": "^16.4.7",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.9",
@@ -27,6 +26,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "jest": "^29.7.0"
   }
 }

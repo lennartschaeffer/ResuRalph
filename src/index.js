@@ -4,6 +4,7 @@ const { validateAndUploadPdf } = require("./controllers/upload");
 const { getAnnotations } = require("./controllers/getAnnotations");
 const { updateResume } = require("./controllers/update");
 const { getLatestResume } = require("./controllers/getLatestResume");
+const { getResumeDiff } = require("./controllers/getResumeDiff");
 
 require("dotenv").config();
 
@@ -23,24 +24,25 @@ client.on("ready", (c) => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  if (interaction.commandName === "review") {
-    await processPDF(interaction);
-  }
-
-  if (interaction.commandName === "upload") {
-    await validateAndUploadPdf(interaction);
-  }
-
-  if (interaction.commandName === "get_annotations") {
-    await getAnnotations(interaction);
-  }
-
-  if (interaction.commandName === "update") {
-    await updateResume(interaction);
-  }
-
-  if (interaction.commandName === "get_latest_resume") {
-    await getLatestResume(interaction);
+  switch (interaction.commandName) {
+    case "review":
+      await processPDF(interaction);
+      break;
+    case "upload":
+      await validateAndUploadPdf(interaction);
+      break;
+    case "get_annotations":
+      await getAnnotations(interaction);
+      break;
+    case "update":
+      await updateResume(interaction);
+      break;
+    case "get_latest_resume":
+      await getLatestResume(interaction);
+      break;
+    case "get_resume_diff":
+      await getResumeDiff(interaction);
+      break;
   }
 });
 
